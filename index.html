@@ -940,11 +940,6 @@
       </div>
       <div class="about-cards">
         <div class="info-card">
-          <div class="info-card-icon">🏫</div>
-          <h3 data-sk="Škola" data-en="School">Škola</h3>
-          <p style="color:var(--muted);font-size:.88rem" data-sk="Gymnázium Pavla Horova, Michalovce, Slovensko" data-en="Gymnázium Pavla Horova, Michalovce, Slovakia">Gymnázium Pavla Horova, Michalovce, Slovensko</p>
-        </div>
-        <div class="info-card">
           <div class="info-card-icon">🤖</div>
           <h3 data-sk="Súťaž" data-en="Competition">Súťaž</h3>
           <p style="color:var(--muted);font-size:.88rem" data-sk="FIRST Global Challenge – robotická olympiáda inšpirujúca mladých v 190+ krajinách" data-en="FIRST Global Challenge – a robotics olympiad inspiring youth in 190+ countries">FIRST Global Challenge – robotická olympiáda inšpirujúca mladých v 190+ krajinách</p>
@@ -1055,35 +1050,50 @@
 <section id="robot">
   <div class="container">
     <div class="section-tag" data-sk="Technológie" data-en="Technology">Technológie</div>
-    <h2 data-sk="Náš robot" data-en="Our robot">Náš robot</h2>
+    <h2 data-sk="Náš projekt I.S.T.O." data-en="Our project I.S.T.O.">Náš projekt I.S.T.O.</h2>
     <div class="robot-layout reveal">
       <div class="robot-img-box">
-        🤖
-        <div style="position:absolute;bottom:16px;left:0;right:0;text-align:center;font-size:0.75rem;color:var(--muted)" data-sk="Fotka robota — doplňte" data-en="Robot photo — add yours">Fotka robota — doplňte</div>
+        <img src="bin_photo.png" alt="" style="width: 100%;height: 100% ;object-fit: contain;opacity: 60%;">
       </div>
       <div>
-        <p style="color:var(--muted);margin-bottom:24px" data-sk="Náš robot je výsledkom mesiacov práce a inovácie. Je navrhnutý na plnenie výziev celosvetovej súťaže FIRST Global Challenge." data-en="Our robot is the result of months of hard work and innovation, designed to tackle the challenges of the FIRST Global Challenge world competition.">
-          Náš robot je výsledkom mesiacov práce a inovácie. Je navrhnutý na plnenie výziev celosvetovej súťaže FIRST Global Challenge.
+        <p style="color:var(--muted);margin-bottom:24px" 
+           data-sk="I.S.T.O. (Inteligentný systém triedenia odpadu) je výsledkom mesiacov výskumu, vývoja a testovania. Ide o inteligentný odpadkový kôš využívajúci umelú inteligenciu a počítačové videnie na automatické rozpoznávanie a triedenie odpadu. Systém je navrhnutý pre súťaž FIRST Global Challenge a rieši reálny problém nesprávneho triedenia odpadu v školskom prostredí." 
+           data-en="I.S.T.O. (Intelligent Sorting System for Waste) is the result of months of research, development, and testing. It is a smart bin that uses artificial intelligence and computer vision to automatically recognize and sort waste. The system was designed for the FIRST Global Challenge and addresses the real-world problem of incorrect waste sorting in schools.">
+          I.S.T.O. (Inteligentný systém triedenia odpadu) je výsledkom mesiacov výskumu, vývoja a testovania. Ide o inteligentný odpadkový kôš využívajúci umelú inteligenciu a počítačové videnie na automatické rozpoznávanie a triedenie odpadu.
         </p>
+
         <div class="spec-list">
           <div class="spec-item">
             <span class="spec-key" data-sk="Platforma" data-en="Platform">Platforma</span>
-            <span class="spec-val" data-sk="Doplňte" data-en="Add">Doplňte</span>
+            <span class="spec-val" data-sk="Raspberry Pi 4B (Edge AI)" data-en="Raspberry Pi 4B (Edge AI)">Raspberry Pi 4B (Edge AI)</span>
           </div>
           <div class="spec-item">
             <span class="spec-key" data-sk="Programovací jazyk" data-en="Programming language">Programovací jazyk</span>
-            <span class="spec-val" data-sk="Doplňte" data-en="Add">Doplňte</span>
+            <span class="spec-val" data-sk="Python 3 (YOLOv8, AI)" data-en="Python 3 (YOLOv8, AI)">Python 3 (YOLOv8, AI)</span>
           </div>
           <div class="spec-item">
             <span class="spec-key" data-sk="Hlavná funkcia" data-en="Main function">Hlavná funkcia</span>
-            <span class="spec-val" data-sk="Doplňte" data-en="Add">Doplňte</span>
+            <span class="spec-val" 
+                  data-sk="Automatické rozpoznávanie a triedenie odpadu pomocou AI" 
+                  data-en="Automatic waste recognition and sorting using AI">
+              Automatické rozpoznávanie a triedenie odpadu pomocou AI
+            </span>
           </div>
           <div class="spec-item">
             <span class="spec-key" data-sk="Špeciálna funkcia" data-en="Special feature">Špeciálna funkcia</span>
-            <span class="spec-val" data-sk="Výzva nových tech. 🥇" data-en="New Tech Challenge 🥇">Výzva nových tech. 🥇</span>
+            <span class="spec-val" 
+                  data-sk="Počítačové videnie + sieť smart košov + navigácia používateľa" 
+                  data-en="Computer vision + smart bin network + user navigation">
+              Počítačové videnie + sieť smart košov + navigácia používateľa
+            </span>
           </div>
         </div>
-        <p style="color:var(--muted);font-size:0.8rem;margin-top:20px" data-sk="💡 Doplňte popis robota, jeho špecifikácie a fotky." data-en="💡 Add a description of your robot, specs, and photos.">💡 Doplňte popis robota, jeho špecifikácie a fotky.</p>
+
+        <p style="color:var(--muted);font-size:0.8rem;margin-top:20px" 
+           data-sk="💡 Robot dokáže klasifikovať odpad do viacerých kategórií, automaticky ho presmerovať a zároveň zbierať dáta pre analýzu a optimalizáciu triedenia." 
+           data-en="💡 The robot can classify waste into multiple categories, automatically sort it, and collect data for analysis and optimization of the sorting process.">
+          💡 Robot dokáže klasifikovať odpad do viacerých kategórií, automaticky ho presmerovať a zároveň zbierať dáta pre analýzu a optimalizáciu triedenia.
+        </p>
       </div>
     </div>
   </div>
