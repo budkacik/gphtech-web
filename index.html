@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GPHTech – FIRST Global Challenge Korea 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0608;
+    --bg2: #120608;
+    --bg3: #1a080a;
+    --accent: #a1081e;
+    --accent2: #c0c0c0;
+    --gold: #c0c0c0;
+    --white: #f5f0f0;
+    --muted: #9a8a8a;
+    --border: rgba(161,8,30,0.2);
+    --card: rgba(26,8,10,0.85);
+    --radius: 12px;
+    --font-heading: 'Syne', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: var(--font-mono);
+    font-size: 15px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5vw;
+    height: 64px;
+    background: rgba(10,14,26,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    height: 44px;
+  }
+  .nav-logo img {
+    height: 44px;
+    width: auto;
+    object-fit: contain;
+    filter: brightness(1.05);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    align-items: center;
+  }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  .lang-toggle {
+    display: flex;
+    gap: 4px;
+    background: var(--bg3);
+    border-radius: 6px;
+    padding: 3px;
+  }
+  .lang-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all .2s;
+    letter-spacing: 0.05em;
+  }
+  .lang-btn.active {
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 700;
+  }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 4px;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px; height: 2px;
+    background: var(--white);
+    border-radius: 2px;
+    transition: all .3s;
+  }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 5vw 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(161,8,30,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(161,8,30,0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(161,8,30,0.18) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(192,192,192,0.08);
+    border: 1px solid rgba(192,192,192,0.25);
+    color: var(--accent2);
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero-badge::before {
+    content: '🏆';
+    font-size: 0.9rem;
+  }
+
+  h1 {
+    font-family: var(--font-heading);
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  h1 .highlight { color: var(--accent); }
+  h1 .korea { color: var(--accent2); }
+
+  .hero-sub {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    max-width: 560px;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--bg);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 14px 32px;
+    border-radius: 8px;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: all .2s;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-primary:hover { background: #c20a23; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(161,8,30,0.4); }
+
+  .btn-secondary {
+    display: inline-block;
+    background: transparent;
+    color: var(--white);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    padding: 14px 32px;
+    border-radius: 8px;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: all .2s;
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+    margin-top: 60px;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-label { color: var(--muted); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; }
+
+  /* ── SECTIONS ── */
+  section { padding: 100px 5vw; }
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  .section-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(161,8,30,0.1);
+    border: 1px solid var(--border);
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin-bottom: 16px;
+  }
+
+  h2 {
+    font-family: var(--font-heading);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .section-lead {
+    color: var(--muted);
+    max-width: 640px;
+    margin-bottom: 56px;
+  }
+
+  /* ── ABOUT ── */
+  #about { background: var(--bg2); }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .about-text p { color: var(--muted); margin-bottom: 16px; }
+  .about-text p:first-child { color: var(--white); font-size: 1.05rem; }
+
+  .about-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .info-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    transition: border-color .2s, transform .2s;
+  }
+  .info-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+  .info-card-icon { font-size: 1.6rem; margin-bottom: 10px; }
+
+  .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .tag {
+    background: rgba(161,8,30,0.1);
+    border: 1px solid var(--border);
+    color: var(--accent);
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── FUNDRAISING ── */
+  #fundraising { background: var(--bg); }
+
+  .fund-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .progress-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 36px;
+  }
+
+  .progress-amounts {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 16px;
+  }
+  .progress-current {
+    font-family: var(--font-heading);
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--accent);
+  }
+  .progress-goal { color: var(--muted); font-size: 0.85rem; }
+
+  .progress-bar {
+    height: 10px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 100px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), #e0102a);
+    border-radius: 100px;
+    width: 0%;
+    transition: width 1.5s cubic-bezier(.22,1,.36,1);
+  }
+
+  .progress-meta { display: flex; justify-content: space-between; color: var(--muted); font-size: 0.78rem; }
+
+  .donio-btn {
+    display: block;
+    text-align: center;
+    margin-top: 28px;
+    background: linear-gradient(135deg, #ff6b6b, #e63946);
+    color: #fff;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 18px 32px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all .2s;
+    box-shadow: 0 4px 20px rgba(230,57,70,0.3);
+  }
+  .donio-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(230,57,70,0.4); }
+  .donio-btn span { display: block; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 400; opacity: 0.8; margin-top: 2px; letter-spacing: 0.05em; }
+
+  .costs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .cost-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+  }
+  .cost-icon { font-size: 1.4rem; flex-shrink: 0; }
+  .cost-label { flex: 1; color: var(--white); font-size: 0.9rem; }
+  .cost-amount { color: var(--accent); font-weight: 700; font-size: 0.9rem; white-space: nowrap; }
+
+  /* ── RESULTS ── */
+  #results { background: var(--bg2); }
+
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin-top: 40px;
+  }
+
+  .result-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color .2s, transform .2s;
+  }
+  .result-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+  .result-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), #c0c0c0);
+  }
+
+  .result-year {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .result-place {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .result-event { color: var(--white); font-size: 0.9rem; margin-bottom: 4px; }
+  .result-detail { color: var(--muted); font-size: 0.8rem; }
+
+  /* ── GALLERY ── */
+  #gallery { background: var(--bg); }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 40px;
+  }
+
+  .gallery-item {
+    aspect-ratio: 4/3;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 0.8rem;
+    text-align: center;
+    transition: border-color .2s;
+    position: relative;
+  }
+  .gallery-item:hover { border-color: var(--accent); }
+  .gallery-placeholder { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .gallery-placeholder .icon { font-size: 2rem; }
+
+  .gallery-upload-note {
+    margin-top: 24px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.8rem;
+    background: rgba(161,8,30,0.04);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+
+  /* ── TEAM ── */
+  #team { background: var(--bg2); }
+
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 40px;
+  }
+
+  .member-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    text-align: center;
+    transition: border-color .2s, transform .2s;
+  }
+  .member-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+
+  .member-avatar {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: var(--bg3);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    margin: 0 auto 14px;
+  }
+
+  .member-name {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+  }
+  .member-role { color: var(--accent); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+  .member-email { color: var(--muted); font-size: 0.72rem; word-break: break-all; }
+  .member-email a { color: var(--muted); text-decoration: none; }
+  .member-email a:hover { color: var(--accent); }
+
+  /* ── ROBOT ── */
+  #robot { background: var(--bg); }
+
+  .robot-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+
+  .robot-img-box {
+    aspect-ratio: 4/3;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .robot-img-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(161,8,30,0.1) 0%, transparent 70%);
+  }
+
+  .spec-list { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; }
+  .spec-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.85rem;
+  }
+  .spec-key { color: var(--muted); }
+  .spec-val { color: var(--white); font-weight: 700; }
+
+  /* ── SPONSORS ── */
+  #sponsors { background: var(--bg2); }
+
+  .sponsor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 40px;
+  }
+
+  .sponsor-slot {
+    background: var(--card);
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color .2s, background .2s;
+    overflow: hidden;
+    position: relative;
+  }
+  .sponsor-slot:hover { border-color: var(--accent); background: rgba(161,8,30,0.06); }
+  .sponsor-slot.has-image { border-style: solid; border-color: rgba(192,192,192,0.25); }
+  .sponsor-slot-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    pointer-events: none;
+  }
+  .sponsor-plus { font-size: 1.6rem; color: var(--accent); opacity: 0.7; line-height: 1; }
+  .sponsor-slot-label { color: var(--muted); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; }
+  .sponsor-slot img.sponsor-img {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    object-fit: contain;
+    padding: 12px;
+  }
+
+  .sponsor-cta {
+    margin-top: 40px;
+    background: linear-gradient(135deg, rgba(161,8,30,0.08), rgba(161,8,30,0.02));
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .sponsor-cta-text h3 { font-size: 1.2rem; margin-bottom: 6px; }
+  .sponsor-cta-text p { color: var(--muted); font-size: 0.85rem; max-width: 400px; }
+
+  /* ── LINKS ── */
+  #links { background: var(--bg); }
+
+  .links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 40px;
+  }
+
+  .link-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    text-decoration: none;
+    color: var(--white);
+    transition: border-color .2s, transform .2s;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .link-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .link-icon { font-size: 1.8rem; }
+  .link-name { font-family: var(--font-heading); font-weight: 700; font-size: 1rem; }
+  .link-desc { color: var(--muted); font-size: 0.78rem; }
+  .link-arrow { color: var(--accent); font-size: 0.85rem; margin-top: auto; }
+
+  /* ── CONTACT ── */
+  #contact { background: var(--bg2); }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .contact-info { display: flex; flex-direction: column; gap: 16px; margin-top: 32px; }
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    text-decoration: none;
+    color: var(--white);
+    font-size: 0.88rem;
+    transition: border-color .2s;
+  }
+  .contact-item:hover { border-color: var(--accent); }
+  .contact-icon { font-size: 1.3rem; flex-shrink: 0; }
+
+  .social-links { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+  .social-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 18px;
+    color: var(--white);
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: all .2s;
+  }
+  .social-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    padding: 40px 5vw;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  /* ── DIVIDER ── */
+  .section-divider {
+    height: 1px;
+    background: var(--border);
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-links.open {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 64px; left: 0; right: 0;
+      background: var(--bg);
+      padding: 24px;
+      gap: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .hamburger { display: flex; }
+    .about-grid, .fund-layout, .robot-layout, .contact-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 24px; }
+    section { padding: 60px 5vw; }
+    .sponsor-cta { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#hero"><img src="GPHTECH.svg" alt="GPHTech Logo"></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about" data-sk="O nás" data-en="About">O nás</a></li>
+    <li><a href="#results" data-sk="Výsledky" data-en="Results">Výsledky</a></li>
+    <li><a href="#fundraising" data-sk="Podpora" data-en="Support">Podpora</a></li>
+    <li><a href="#team" data-sk="Tím" data-en="Team">Tím</a></li>
+    <li><a href="#gallery" data-sk="Galéria" data-en="Gallery">Galéria</a></li>
+    <li><a href="#contact" data-sk="Kontakt" data-en="Contact">Kontakt</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:12px">
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('sk')">SK</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="container" style="position:relative;z-index:1">
+    <img src="GPHTECH.svg" alt="GPHTech" style="height:90px;width:auto;margin-bottom:24px;filter:drop-shadow(0 0 20px rgba(161,8,30,0.5));animation:fadeUp 0.5s ease both;">
+    <div class="hero-badge" data-sk="Víťazi FIRST Global Slovakia 2025" data-en="Winners of FIRST Global Slovakia 2025">Víťazi FIRST Global Slovakia 2025</div>
+    <h1>
+      <span data-sk="Ideme do" data-en="We're going to">Ideme do</span><br>
+      <span class="korea" data-sk="Kórey" data-en="Korea">Kórey</span><br>
+      <span class="highlight" data-sk="reprezentovať Slovensko" data-en="to represent Slovakia">reprezentovať Slovensko</span>
+    </h1>
+    <p class="hero-sub" data-sk="Tím GPHTech z Gymnázia Pavla Horova v Michalovciach postúpil na celosvetovú súťaž FIRST Global Challenge v Inčchone. Pomôž nám tam dostať!" data-en="Team GPHTech from Gymnázium Pavla Horova in Michalovce has qualified for the FIRST Global Challenge world finals in Incheon, Korea. Help us get there!">
+      Tím GPHTech z Gymnázia Pavla Horova v Michalovciach postúpil na celosvetovú súťaž FIRST Global Challenge v Inčchone. Pomôž nám tam dostať!
+    </p>
+    <div class="hero-cta">
+      <a href="https://www.donio.sk" target="_blank" class="btn-primary" data-sk="❤️ Podporiť na Donio" data-en="❤️ Support on Donio">❤️ Podporiť na Donio</a>
+      <a href="#about" class="btn-secondary" data-sk="Zistiť viac" data-en="Learn more">Zistiť viac</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">3.</div>
+        <div class="stat-label" data-sk="miesto celkovo" data-en="overall place">miesto celkovo</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">1.</div>
+        <div class="stat-label" data-sk="Výzva nových tech." data-en="New Tech Challenge">Výzva nových tech.</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">190+</div>
+        <div class="stat-label" data-sk="krajín na FGC" data-en="countries at FGC">krajín na FGC</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="section-tag" data-sk="O tíme" data-en="About the team">O tíme</div>
+    <h2 data-sk="Kto sme?" data-en="Who are we?">Kto sme?</h2>
+    <div class="about-grid reveal">
+      <div class="about-text">
+        <p data-sk="Sme študenti Gymnázia Pavla Horova v Michalovciach – tím GPHTech, ktorý spája nadšencov robotiky, vedy a moderných technológií." data-en="We are students from Gymnázium Pavla Horova in Michalovce – team GPHTech, uniting robotics, science and technology enthusiasts.">
+          Sme študenti Gymnázia Pavla Horova v Michalovciach – tím GPHTech, ktorý spája nadšencov robotiky, vedy a moderných technológií.
+        </p>
+        <p data-sk="Naša hlavná činnosť je návrh, vývoj a programovanie robotických riešení. Súťažíme v súťaži FIRST Global Slovakia a FIRST Global Challenge, kde riešime moderné výzvy súčasného sveta pomocou inovatívnych technológií." data-en="Our main focus is design, development and programming of robotic solutions. We compete in competitions FIRST Global Slovakia and FIRST Global Challenge, tackling modern challenges using innovative technologies.">
+          Naša hlavná činnosť je návrh, vývoj a programovanie robotických riešení. Súťažíme v FIRST Global Slovakia a FIRST Global Challenge, kde riešime moderné výzvy súčasného sveta pomocou inovačných technológií.
+        </p>
+        <p data-sk="V aktuálnom školskom roku sme dosiahli významný úspech: vyhrali sme Výzvu nových technológií v celoslovenskej súťaži FIRST Global Slovakia, čím sme si zabezpečili postup do celosvetového finále v Inčchone v Južnej Kórei." data-en="This school year we achieved a major milestone: we won the New Technologies Challenge at the national FIRST Global Slovakia competition, securing our spot at the world finals in Incheon, South Korea.">
+          V aktuálnom školskom roku sme dosiahli významný úspech: vyhrali sme Výzvu nových technológií v celoslovenskej súťaži FIRST Global Slovakia, čím sme si zabezpečili postup do celosvetového finále v Inčchone v Južnej Kórei.
+        </p>
+        <div class="tag-list">
+          <span class="tag">Robotika</span>
+          <span class="tag">FIRST Global</span>
+          <span class="tag">Inovácie</span>
+          <span class="tag">STEM</span>
+          <span class="tag">Michalovce</span>
+        </div>
+      </div>
+      <div class="about-cards">
+        <div class="info-card">
+          <div class="info-card-icon">🏫</div>
+          <h3 data-sk="Škola" data-en="School">Škola</h3>
+          <p style="color:var(--muted);font-size:.88rem" data-sk="Gymnázium Pavla Horova, Michalovce, Slovensko" data-en="Gymnázium Pavla Horova, Michalovce, Slovakia">Gymnázium Pavla Horova, Michalovce, Slovensko</p>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">🤖</div>
+          <h3 data-sk="Súťaž" data-en="Competition">Súťaž</h3>
+          <p style="color:var(--muted);font-size:.88rem" data-sk="FIRST Global Challenge – robotická olympiáda inšpirujúca mladých v 190+ krajinách" data-en="FIRST Global Challenge – a robotics olympiad inspiring youth in 190+ countries">FIRST Global Challenge – robotická olympiáda inšpirujúca mladých v 190+ krajinách</p>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">📍</div>
+          <h3 data-sk="Destinácia" data-en="Destination">Destinácia</h3>
+          <p style="color:var(--muted);font-size:.88rem" data-sk="Inčchon, Južná Kórea 🇰🇷" data-en="Incheon, South Korea 🇰🇷">Inčchon, Južná Kórea 🇰🇷</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="results">
+  <div class="container">
+    <div class="section-tag" data-sk="História" data-en="History">História</div>
+    <h2 data-sk="Naše výsledky" data-en="Our results">Naše výsledky</h2>
+    <p class="section-lead" data-sk="Sledujeme pokrok od prvého ročníka FIRST Global na GPH. Každý rok sa zlepšujeme." data-en="Tracking our progress since the first FIRST Global year at GPH. We improve every year.">
+      Sledujeme pokrok od prvého ročníka FIRST Global na GPH. Každý rok sa zlepšujeme.
+    </p>
+    <div class="results-grid reveal">
+      <div class="result-card">
+        <div class="result-year">2025 — FIRST Global Slovakia</div>
+        <div class="result-place">🥉 3.</div>
+        <div class="result-event" data-sk="Celkové umiestnenie" data-en="Overall placement">Celkové umiestnenie</div>
+        <div class="result-detail" data-sk="Celoslovenská súťaž" data-en="National competition">Celoslovenská súťaž</div>
+      </div>
+      <div class="result-card">
+        <div class="result-year">2025 — FIRST Global Slovakia</div>
+        <div class="result-place">🥇 1.</div>
+        <div class="result-event" data-sk="Výzva nových technológií" data-en="New Technologies Challenge">Výzva nových technológií</div>
+        <div class="result-detail" data-sk="→ Postup na FGC Kórea" data-en="→ Qualified for FGC Korea">→ Postup na FGC Kórea</div>
+      </div>
+      <div class="result-card" style="opacity:.6">
+        <div class="result-year" data-sk="Predchádzajúce roky" data-en="Previous years">Predchádzajúce roky</div>
+        <div class="result-place" style="font-size:1.2rem;color:var(--muted)" data-sk="Doplňte výsledky" data-en="Add your results">Doplňte výsledky</div>
+        <div class="result-event" data-sk="História tímu od prvého ročníka FG na GPH" data-en="Team history since first FG year at GPH">História tímu od prvého ročníka FG na GPH</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FUNDRAISING -->
+<section id="fundraising">
+  <div class="container">
+    <div class="section-tag" data-sk="Zbierka" data-en="Fundraiser">Zbierka</div>
+    <h2 data-sk="Pomôž nám do Kórey" data-en="Help us get to Korea">Pomôž nám do Kórey</h2>
+    <div class="fund-layout reveal">
+      <div>
+        <div class="progress-card">
+          <div class="progress-amounts">
+            <div class="progress-current" id="raisedAmount">–</div>
+            <div class="progress-goal" data-sk="Cieľ: zadajte na Donio" data-en="Goal: check Donio">Cieľ: pozrite na Donio</div>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <div class="progress-meta">
+            <span data-sk="Sledujte pokrok live na Donio" data-en="Track live progress on Donio">Sledujte pokrok live na Donio</span>
+            <span id="progressPct"></span>
+          </div>
+          <a href="https://www.donio.sk" target="_blank" class="donio-btn">
+            ❤️ <span data-sk="Prispej na Donio" data-en="Donate on Donio">Prispej na Donio</span>
+            <span data-sk="Bezpečná platforma pre zbierky" data-en="Safe crowdfunding platform">Bezpečná platforma pre zbierky</span>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h3 style="margin-bottom:20px" data-sk="Na čo peniaze použijeme?" data-en="What will the money be used for?">Na čo peniaze použijeme?</h3>
+        <div class="costs-list">
+          <div class="cost-item">
+            <span class="cost-icon">✈️</span>
+            <span class="cost-label" data-sk="Letenky do Južnej Kórey a späť" data-en="Flights to South Korea and back">Letenky do Južnej Kórey a späť</span>
+          </div>
+          <div class="cost-item">
+            <span class="cost-icon">🏨</span>
+            <span class="cost-label" data-sk="Ubytovanie počas súťaže" data-en="Accommodation during the competition">Ubytovanie počas súťaže</span>
+          </div>
+          <div class="cost-item">
+            <span class="cost-icon">🍱</span>
+            <span class="cost-label" data-sk="Strava a základné životné náklady" data-en="Meals and basic living costs">Strava a základné životné náklady</span>
+          </div>
+          <div class="cost-item">
+            <span class="cost-icon">🤖</span>
+            <span class="cost-label" data-sk="Materiál a doprava robota" data-en="Robot materials and shipping">Materiál a doprava robota</span>
+          </div>
+        </div>
+        <p style="color:var(--muted);font-size:0.82rem;margin-top:20px" data-sk="Budeme si veľmi vážiť akejkoľvek formy podpory. Investícia do mladých talentov má dlhodobý prínos pre celú spoločnosť." data-en="We deeply appreciate any form of support. Investing in young talent has long-term benefits for society as a whole.">
+          Budeme si veľmi vážiť akejkoľvek formy podpory. Investícia do mladých talentov má dlhodobý prínos pre celú spoločnosť.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROBOT -->
+<section id="robot">
+  <div class="container">
+    <div class="section-tag" data-sk="Technológie" data-en="Technology">Technológie</div>
+    <h2 data-sk="Náš robot" data-en="Our robot">Náš robot</h2>
+    <div class="robot-layout reveal">
+      <div class="robot-img-box">
+        🤖
+        <div style="position:absolute;bottom:16px;left:0;right:0;text-align:center;font-size:0.75rem;color:var(--muted)" data-sk="Fotka robota — doplňte" data-en="Robot photo — add yours">Fotka robota — doplňte</div>
+      </div>
+      <div>
+        <p style="color:var(--muted);margin-bottom:24px" data-sk="Náš robot je výsledkom mesiacov práce a inovácie. Je navrhnutý na plnenie výziev celosvetovej súťaže FIRST Global Challenge." data-en="Our robot is the result of months of hard work and innovation, designed to tackle the challenges of the FIRST Global Challenge world competition.">
+          Náš robot je výsledkom mesiacov práce a inovácie. Je navrhnutý na plnenie výziev celosvetovej súťaže FIRST Global Challenge.
+        </p>
+        <div class="spec-list">
+          <div class="spec-item">
+            <span class="spec-key" data-sk="Platforma" data-en="Platform">Platforma</span>
+            <span class="spec-val" data-sk="Doplňte" data-en="Add">Doplňte</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-key" data-sk="Programovací jazyk" data-en="Programming language">Programovací jazyk</span>
+            <span class="spec-val" data-sk="Doplňte" data-en="Add">Doplňte</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-key" data-sk="Hlavná funkcia" data-en="Main function">Hlavná funkcia</span>
+            <span class="spec-val" data-sk="Doplňte" data-en="Add">Doplňte</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-key" data-sk="Špeciálna funkcia" data-en="Special feature">Špeciálna funkcia</span>
+            <span class="spec-val" data-sk="Výzva nových tech. 🥇" data-en="New Tech Challenge 🥇">Výzva nových tech. 🥇</span>
+          </div>
+        </div>
+        <p style="color:var(--muted);font-size:0.8rem;margin-top:20px" data-sk="💡 Doplňte popis robota, jeho špecifikácie a fotky." data-en="💡 Add a description of your robot, specs, and photos.">💡 Doplňte popis robota, jeho špecifikácie a fotky.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" style="background:var(--bg2)">
+  <div class="container">
+    <div class="section-tag" data-sk="Galéria" data-en="Gallery">Galéria</div>
+    <h2 data-sk="Fotky tímu" data-en="Team photos">Fotky tímu</h2>
+    <p class="section-lead" data-sk="Záznamy z tréningov, súťaží a spoločných momentov." data-en="Moments from training, competitions and team life.">
+      Záznamy z tréningov, súťaží a spoločných momentov.
+    </p>
+    <div class="gallery-grid reveal">
+      <div class="gallery-item"><div class="gallery-placeholder"><span class="icon">📸</span><span data-sk="Spoločná fotka tímu" data-en="Team group photo">Spoločná fotka tímu</span></div></div>
+      <div class="gallery-item"><div class="gallery-placeholder"><span class="icon">🏆</span><span data-sk="Odovzdávanie cien" data-en="Award ceremony">Odovzdávanie cien</span></div></div>
+      <div class="gallery-item"><div class="gallery-placeholder"><span class="icon">🤖</span><span data-sk="Zostrojovanie robota" data-en="Building the robot">Zostrojovanie robota</span></div></div>
+      <div class="gallery-item"><div class="gallery-placeholder"><span class="icon">⚙️</span><span data-sk="Tréning a testovanie" data-en="Training and testing">Tréning a testovanie</span></div></div>
+      <div class="gallery-item"><div class="gallery-placeholder"><span class="icon">🇸🇰</span><span data-sk="Súťaž FIRST Global Slovakia" data-en="FIRST Global Slovakia competition">Súťaž FIRST Global Slovakia</span></div></div>
+      <div class="gallery-item"><div class="gallery-placeholder"><span class="icon">🌍</span><span data-sk="Príprava na Kóreu" data-en="Preparing for Korea">Príprava na Kóreu</span></div></div>
+    </div>
+    <div class="gallery-upload-note">
+      <strong data-sk="📁 Ako pridať fotky?" data-en="📁 How to add photos?">📁 Ako pridať fotky?</strong><br>
+      <span data-sk="Nahrajte obrázky na server a nahraďte zástupné sekcie v HTML kóde pomocou tagov &lt;img src='...'&gt;." data-en="Upload your images to the server and replace placeholder sections in the HTML with &lt;img src='...'&gt; tags.">
+        Nahrajte obrázky na server a nahraďte zástupné sekcie v HTML kóde pomocou tagov &lt;img src='...'&gt;.
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="container">
+    <div class="section-tag" data-sk="Členovia" data-en="Members">Členovia</div>
+    <h2 data-sk="Spoznaj tím" data-en="Meet the team">Spoznaj tím</h2>
+    <p class="section-lead" data-sk="Mladí inžinieri a programátori z Michaloviec, ktorí reprezentujú Slovensko na svetovej scéne." data-en="Young engineers and programmers from Michalovce representing Slovakia on the world stage.">
+      Mladí inžinieri a programátori z Michaloviec, ktorí reprezentujú Slovensko na svetovej scéne.
+    </p>
+    <div class="team-grid reveal">
+      <!-- Doplňte skutočných členov tímu / Add real team members -->
+      <div class="member-card">
+        <div class="member-avatar">👤</div>
+        <div class="member-name">Meno Priezvisko</div>
+        <div class="member-role" data-sk="Kapitán" data-en="Captain">Kapitán</div>
+        <div class="member-email"><a href="mailto:email@gph.sk">email@gph.sk</a></div>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar">👤</div>
+        <div class="member-name">Meno Priezvisko</div>
+        <div class="member-role" data-sk="Programátor" data-en="Programmer">Programátor</div>
+        <div class="member-email"><a href="mailto:email@gph.sk">email@gph.sk</a></div>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar">👤</div>
+        <div class="member-name">Meno Priezvisko</div>
+        <div class="member-role" data-sk="Konštruktér" data-en="Engineer">Konštruktér</div>
+        <div class="member-email"><a href="mailto:email@gph.sk">email@gph.sk</a></div>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar">👤</div>
+        <div class="member-name">Meno Priezvisko</div>
+        <div class="member-role" data-sk="Dizajnér" data-en="Designer">Dizajnér</div>
+        <div class="member-email"><a href="mailto:email@gph.sk">email@gph.sk</a></div>
+      </div>
+      <div class="member-card" style="opacity:.5;border-style:dashed">
+        <div class="member-avatar">➕</div>
+        <div class="member-name" data-sk="Doplňte člena" data-en="Add member">Doplňte člena</div>
+        <div class="member-role" data-sk="Rola" data-en="Role">Rola</div>
+        <div class="member-email">email@gph.sk</div>
+      </div>
+    </div>
+    <p style="color:var(--muted);font-size:0.8rem;margin-top:24px;text-align:center" data-sk="💡 Doplňte mená, roly, emojis avatary a e-maily skutočných členov tímu." data-en="💡 Fill in real team members' names, roles, emoji avatars and emails.">💡 Doplňte mená, roly, emojis avatary a e-maily skutočných členov tímu.</p>
+  </div>
+</section>
+
+<!-- SPONSORS -->
+<section id="sponsors" style="background:var(--bg2)">
+  <div class="container">
+    <div class="section-tag" data-sk="Partneri" data-en="Partners">Partneri</div>
+    <h2 data-sk="Sponzori & Podporovatelia" data-en="Sponsors & Supporters">Sponzori & Podporovatelia</h2>
+    <p class="section-lead" data-sk="Ďakujeme všetkým, ktorí nám pomáhajú dostať sa na svetovú scénu." data-en="Thank you to everyone helping us reach the world stage.">
+      Ďakujeme všetkým, ktorí nám pomáhajú dostať sa na svetovú scénu.
+    </p>
+    <div class="sponsor-grid reveal" id="sponsorGrid">
+      <label class="sponsor-slot" title="Nahrať logo sponzora">
+        <input type="file" accept="image/*" onchange="loadSponsorImage(this)" style="display:none">
+        <div class="sponsor-slot-inner">
+          <span class="sponsor-plus">＋</span>
+          <span class="sponsor-slot-label" data-sk="Logo sponzora" data-en="Sponsor logo">Logo sponzora</span>
+        </div>
+      </label>
+      <label class="sponsor-slot" title="Nahrať logo sponzora">
+        <input type="file" accept="image/*" onchange="loadSponsorImage(this)" style="display:none">
+        <div class="sponsor-slot-inner">
+          <span class="sponsor-plus">＋</span>
+          <span class="sponsor-slot-label" data-sk="Logo sponzora" data-en="Sponsor logo">Logo sponzora</span>
+        </div>
+      </label>
+      <label class="sponsor-slot" title="Nahrať logo sponzora">
+        <input type="file" accept="image/*" onchange="loadSponsorImage(this)" style="display:none">
+        <div class="sponsor-slot-inner">
+          <span class="sponsor-plus">＋</span>
+          <span class="sponsor-slot-label" data-sk="Logo sponzora" data-en="Sponsor logo">Logo sponzora</span>
+        </div>
+      </label>
+      <label class="sponsor-slot" title="Nahrať logo sponzora">
+        <input type="file" accept="image/*" onchange="loadSponsorImage(this)" style="display:none">
+        <div class="sponsor-slot-inner">
+          <span class="sponsor-plus">＋</span>
+          <span class="sponsor-slot-label" data-sk="Vaše logo tu" data-en="Your logo here">Vaše logo tu</span>
+        </div>
+      </label>
+    </div>
+    <p style="color:var(--muted);font-size:0.78rem;margin-top:16px;text-align:center" data-sk="💡 Kliknite na políčko a nahrajte logo sponzora (PNG, JPG alebo SVG)." data-en="💡 Click a slot to upload a sponsor logo (PNG, JPG or SVG).">💡 Kliknite na políčko a nahrajte logo sponzora (PNG, JPG alebo SVG).</p>
+    <div class="sponsor-cta reveal">
+      <div class="sponsor-cta-text">
+        <h3 data-sk="Staňte sa partnerom tímu GPHTech" data-en="Become a GPHTech team partner">Staňte sa partnerom tímu GPHTech</h3>
+        <p data-sk="Vaša podpora pomôže mladým talentom reprezentovať Slovensko na svetovej úrovni. Kontaktujte nás pre spoluprácu." data-en="Your support helps young talent represent Slovakia on the world stage. Contact us to discuss partnership.">
+          Vaša podpora pomôže mladým talentom reprezentovať Slovensko na svetovej úrovni. Kontaktujte nás pre spoluprácu.
+        </p>
+      </div>
+      <a href="#contact" class="btn-primary" data-sk="Kontaktujte nás" data-en="Contact us">Kontaktujte nás</a>
+    </div>
+  </div>
+</section>
+
+<!-- LINKS -->
+<section id="links">
+  <div class="container">
+    <div class="section-tag" data-sk="Odkazy" data-en="Links">Odkazy</div>
+    <h2 data-sk="Užitočné odkazy" data-en="Useful links">Užitočné odkazy</h2>
+    <div class="links-grid reveal">
+      <a href="https://www.donio.sk" target="_blank" class="link-card">
+        <span class="link-icon">❤️</span>
+        <span class="link-name">Donio</span>
+        <span class="link-desc" data-sk="Podporte nás priamo cez zbierku" data-en="Support us directly via our fundraiser">Podporte nás priamo cez zbierku</span>
+        <span class="link-arrow">→ donio.sk</span>
+      </a>
+      <a href="https://first.global/fgc/" target="_blank" class="link-card">
+        <span class="link-icon">🌍</span>
+        <span class="link-name">FIRST Global Challenge</span>
+        <span class="link-desc" data-sk="Celosvetová robotická olympiáda" data-en="Worldwide robotics olympiad">Celosvetová robotická olympiáda</span>
+        <span class="link-arrow">→ first.global/fgc</span>
+      </a>
+      <a href="https://first.global" target="_blank" class="link-card">
+        <span class="link-icon">🤖</span>
+        <span class="link-name">FIRST Global</span>
+        <span class="link-desc" data-sk="Organizácia za súťažou" data-en="Organization behind the competition">Organizácia za súťažou</span>
+        <span class="link-arrow">→ first.global</span>
+      </a>
+      <a href="https://www.instagram.com" target="_blank" class="link-card" id="igLink">
+        <span class="link-icon">📸</span>
+        <span class="link-name">Instagram</span>
+        <span class="link-desc" data-sk="Sledujte nás na Instagrame" data-en="Follow us on Instagram">Sledujte nás na Instagrame</span>
+        <span class="link-arrow">→ @gphtech</span>
+      </a>
+      <a href="https://www.gph.sk" target="_blank" class="link-card">
+        <span class="link-icon">🏫</span>
+        <span class="link-name">GPH Michalovce</span>
+        <span class="link-desc" data-sk="Gymnázium Pavla Horova" data-en="Gymnázium Pavla Horova">Gymnázium Pavla Horova</span>
+        <span class="link-arrow">→ gph.sk</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="section-tag" data-sk="Kontakt" data-en="Contact">Kontakt</div>
+    <h2 data-sk="Spojte sa s nami" data-en="Get in touch">Spojte sa s nami</h2>
+    <div class="contact-grid reveal">
+      <div>
+        <p style="color:var(--muted)" data-sk="Máte otázky o tíme, zbierke alebo sponzorstve? Neváhajte nás kontaktovať." data-en="Questions about the team, fundraiser or sponsorship? Don't hesitate to reach out.">
+          Máte otázky o tíme, zbierke alebo sponzorstve? Neváhajte nás kontaktovať.
+        </p>
+        <div class="contact-info">
+          <a href="mailto:gphtech@gph.sk" class="contact-item">
+            <span class="contact-icon">✉️</span>
+            <span data-sk="gphtech@gph.sk — Doplňte e-mail" data-en="gphtech@gph.sk — Add your email">gphtech@gph.sk — doplňte</span>
+          </a>
+          <a href="tel:+421" class="contact-item">
+            <span class="contact-icon">📞</span>
+            <span data-sk="Telefón — doplňte číslo" data-en="Phone — add your number">Telefón — doplňte číslo</span>
+          </a>
+          <div class="contact-item">
+            <span class="contact-icon">📍</span>
+            <span>Gymnázium Pavla Horova, Michalovce</span>
+          </div>
+        </div>
+        <div class="social-links">
+          <a href="https://www.instagram.com" target="_blank" class="social-btn">📸 Instagram</a>
+          <a href="https://www.donio.sk" target="_blank" class="social-btn">❤️ Donio</a>
+          <a href="https://first.global" target="_blank" class="social-btn">🌍 FIRST Global</a>
+        </div>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:32px">
+        <h3 style="margin-bottom:20px" data-sk="Napíšte nám" data-en="Write to us">Napíšte nám</h3>
+        <p style="color:var(--muted);font-size:0.85rem;line-height:1.7" data-sk="Pre spoluprácu, sponzorstvo alebo akékoľvek otázky nás kontaktujte priamo emailom. Odpovieme čo najskôr!" data-en="For partnerships, sponsorship or any questions, contact us directly by email. We'll reply as soon as possible!">
+          Pre spoluprácu, sponzorstvo alebo akékoľvek otázky nás kontaktujte priamo emailom. Odpovieme čo najskôr!
+        </p>
+        <a href="mailto:gphtech@gph.sk" class="btn-primary" style="margin-top:24px;display:inline-block" data-sk="📧 Napísať e-mail" data-en="📧 Send email">📧 Napísať e-mail</a>
+        <p style="color:var(--muted);font-size:0.75rem;margin-top:32px;border-top:1px solid var(--border);padding-top:16px" data-sk="Môžete nás kontaktovať aj cez zbierku na Donio alebo na Instagrame." data-en="You can also reach us through our Donio campaign or on Instagram.">
+          Môžete nás kontaktovať aj cez zbierku na Donio alebo na Instagrame.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div style="margin-bottom:16px">
+    <img src="GPHTECH.svg" alt="GPHTech" style="height:50px;width:auto;opacity:0.9;">
+  </div>
+  <p data-sk="Tím GPHTech · Gymnázium Pavla Horova · Michalovce · Slovensko" data-en="Team GPHTech · Gymnázium Pavla Horova · Michalovce · Slovakia">
+    Tím GPHTech · Gymnázium Pavla Horova · Michalovce · Slovensko
+  </p>
+  <p style="margin-top:8px">
+    <a href="https://first.global/fgc/" target="_blank">FIRST Global Challenge</a> &nbsp;·&nbsp;
+    <a href="https://www.donio.sk" target="_blank">Donio</a> &nbsp;·&nbsp;
+    <a href="https://www.gph.sk" target="_blank">GPH Michalovce</a>
+  </p>
+  <p style="margin-top:16px;font-size:0.72rem;opacity:.5" data-sk="© 2025 GPHTech. Reprezentujeme Slovensko." data-en="© 2025 GPHTech. Representing Slovakia.">© 2025 GPHTech. Reprezentujeme Slovensko.</p>
+</footer>
+
+<script>
+// ── LANGUAGE SYSTEM ──
+let currentLang = 'sk';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.documentElement.lang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent === lang.toUpperCase()));
+  document.querySelectorAll('[data-sk]').forEach(el => {
+    el.textContent = lang === 'sk' ? el.dataset.sk : el.dataset.en;
+  });
+}
+
+// ── MOBILE MENU ──
+function toggleMenu() {
+  const nl = document.getElementById('navLinks');
+  nl.classList.toggle('open');
+}
+document.querySelectorAll('#navLinks a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
+});
+
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── SPONSOR IMAGE UPLOAD ──
+function loadSponsorImage(input) {
+  if (!input.files || !input.files[0]) return;
+  const slot = input.closest('.sponsor-slot');
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    // remove placeholder inner
+    const inner = slot.querySelector('.sponsor-slot-inner');
+    if (inner) inner.style.display = 'none';
+    // remove old img if exists
+    const old = slot.querySelector('.sponsor-img');
+    if (old) old.remove();
+    const img = document.createElement('img');
+    img.src = e.target.result;
+    img.className = 'sponsor-img';
+    img.alt = 'Sponsor logo';
+    slot.appendChild(img);
+    slot.classList.add('has-image');
+    // click to replace
+    slot.title = 'Kliknúť pre zmenu loga';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+// Update this with your real Donio numbers!
+const raised = 0;   // ← replace with actual amount raised
+const goal = 5000;  // ← replace with actual goal
+const pct = goal > 0 ? Math.min(100, Math.round(raised / goal * 100)) : 0;
+
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('raisedAmount').textContent = raised > 0 ? raised + ' €' : '–';
+    document.getElementById('progressPct').textContent = pct > 0 ? pct + '%' : '';
+  }, 400);
+});
+</script>
+</body>
+</html>
