@@ -770,6 +770,7 @@
 
   /* ── MOBILE ── */
   @media (max-width: 768px) {
+    /* Nav */
     .nav-links { display: none; }
     .nav-links.open {
       display: flex;
@@ -780,12 +781,76 @@
       padding: 24px;
       gap: 16px;
       border-bottom: 1px solid var(--border);
+      z-index: 99;
     }
     .hamburger { display: flex; }
-    .about-grid, .fund-layout, .robot-layout, .contact-grid { grid-template-columns: 1fr; }
-    .hero-stats { gap: 24px; }
+
+    /* Hero */
+    #hero { padding: 100px 5vw 60px; }
+    #hero img[alt="GPHTech"] {
+      height: 120px !important;
+      margin-bottom: -50px !important;
+    }
+    h1 { font-size: clamp(2rem, 9vw, 3rem); }
+    .hero-sub { font-size: 0.88rem; }
+    .hero-cta { flex-direction: column; align-items: center; gap: 12px; }
+    .hero-cta a { width: 100%; max-width: 320px; text-align: center; }
+    .hero-stats { gap: 20px; margin-top: 40px; }
+    .stat-num { font-size: 1.8rem; }
+
+    /* Grids */
+    .about-grid,
+    .fund-layout,
+    .robot-layout,
+    .contact-grid { grid-template-columns: 1fr; }
+
+    /* Sections */
     section { padding: 60px 5vw; }
+
+    /* Progress card */
+    .progress-card { padding: 24px; }
+    .progress-current { font-size: 1.8rem; }
+
+    /* Robot spec items */
+    .spec-item { flex-wrap: wrap; gap: 4px; }
+
+    /* Sponsor */
     .sponsor-cta { flex-direction: column; }
+    .sponsor-cta-text p { max-width: 100%; }
+
+    /* Links & team grids — 2 columns on phone */
+    .links-grid,
+    .team-grid,
+    .sponsor-grid { grid-template-columns: repeat(2, 1fr); }
+
+    /* Results grid — 1 column on small phones */
+    .results-grid { grid-template-columns: 1fr; }
+
+    /* Gallery — 1 column on phone */
+    .gallery-grid { grid-template-columns: 1fr; }
+
+    /* Social buttons */
+    .social-links { flex-direction: column; }
+    .social-btn { justify-content: center; }
+
+    /* Contact box */
+    #contact .container > div:last-child { padding: 20px !important; }
+
+    /* Buttons full-width in contact */
+    .btn-primary, .btn-secondary { display: block; text-align: center; }
+  }
+
+  @media (max-width: 480px) {
+    .links-grid,
+    .team-grid,
+    .sponsor-grid { grid-template-columns: 1fr; }
+
+    nav { padding: 0 4vw; }
+    .nav-logo img { height: 36px; }
+    h2 { font-size: 1.6rem; }
+    .progress-amounts { flex-direction: column; gap: 4px; }
+    .cost-item { flex-wrap: wrap; }
+    .cost-amount { width: 100%; text-align: right; }
   }
 </style>
 </head>
@@ -818,7 +883,7 @@
   <div class="hero-grid"></div>
   <div class="hero-glow"></div>
   <div class="container" style="position:relative;z-index:1">
-    <img src="GPHTECH.svg" alt="GPHTech" style="height:180px;width:auto;margin-bottom:-80px;filter:drop-shadow(0 0 20px rgba(161,8,30,0.5));animation:fadeUp 0.5s ease both;">
+    <img src="GPHTECH.svg" alt="GPHTech" style="height:180px;width:auto;margin-bottom:-60px;filter:drop-shadow(0 0 20px rgba(161,8,30,0.5));animation:fadeUp 0.5s ease both;">
     <div class="hero-badge" data-sk="Víťazi FIRST Global Slovakia NTE 2026" data-en="Winners of FIRST Global Slovakia NTE 2026">Víťazi FIRST Global Slovakia NTE 2026</div>
     <h1>
       <span data-sk="Pomôžte nám" data-en="Help us">Pomôžte nám</span><br>
