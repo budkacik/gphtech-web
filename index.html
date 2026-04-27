@@ -620,14 +620,27 @@
     justify-content: center;
     overflow: hidden;
     position: relative;
+    padding: 16px;
   }
 
   .sponsor-slot-inner {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 6px;
+    width: 100%;
+    height: 100%;
   }
+
+  .sponsor-slot-inner img {
+    max-width: 100%;
+    max-height: 72px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+
   .sponsor-plus { font-size: 1.6rem; color: var(--muted); opacity: 0.5; line-height: 1; }
   .sponsor-slot-label { color: var(--muted); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; }
 
@@ -1167,8 +1180,7 @@
     <div class="sponsor-grid reveal">
       <div class="sponsor-slot">
         <div class="sponsor-slot-inner">
-          <span class="sponsor-plus">◻</span>
-          <span class="sponsor-slot-label" data-sk="Logo sponzora" data-en="Sponsor logo">Logo sponzora</span>
+          <img src="img/gph.png">  
         </div>
       </div>
       <div class="sponsor-slot">
