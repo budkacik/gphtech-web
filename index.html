@@ -971,7 +971,7 @@
         <div class="progress-card">
           <div class="progress-amounts">
             <div class="progress-current" id="raisedAmount">–</div>
-            <div class="progress-goal" data-sk="Cieľ: pozrite na Donio" data-en="Goal: check Donio">Cieľ: pozrite na Donio</div>
+            <div class="progress-goal" data-sk="Cieľ: 15 000€" data-en="Goal: 15 000€">Cieľ: 15 000€</div>
           </div>
           <div class="progress-bar">
             <div class="progress-fill" id="progressFill"></div>
@@ -1294,15 +1294,17 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.08 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-const raised = 0;
-const goal   = 5000;
+const raised = 279;
+const goal   = 15000;
+const donors = 16;
 const pct    = goal > 0 ? Math.min(100, Math.round(raised / goal * 100)) : 0;
 
 window.addEventListener('load', () => {
   setTimeout(() => {
     document.getElementById('progressFill').style.width = pct + '%';
     document.getElementById('raisedAmount').textContent = raised > 0 ? raised + ' €' : '–';
-    document.getElementById('progressPct').textContent = pct > 0 ? pct + '%' : '';
+    document.getElementById('progressPct').textContent = pct > 0 ? pct + ' % • ' + donors + ' darcov' : '';
+    document.getElementById('progressGoal').textContent = currentLang === 'sk' ? 'Cieľ: ' + goal.toLocaleString('sk') + ' €' : 'Goal: ' + goal.toLocaleString('en') + ' €';
   }, 400);
 });
 </script>
