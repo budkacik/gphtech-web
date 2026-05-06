@@ -971,7 +971,7 @@
         <div class="progress-card">
           <div class="progress-amounts">
             <div class="progress-current" id="raisedAmount">–</div>
-            <div class="progress-goal" data-sk="Cieľ: 15 000€" data-en="Goal: 15 000€">Cieľ: 15 000€</div>
+            <div class="progress-goal" data-sk="Cieľ: pozrite na Donio" data-en="Goal: check Donio">Cieľ: pozrite na Donio</div>
           </div>
           <div class="progress-bar">
             <div class="progress-fill" id="progressFill"></div>
@@ -1294,9 +1294,9 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.08 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-const raised = 279;
+const raised = 517;
 const goal   = 15000;
-const donors = 16;
+const donors = 24;
 const pct    = goal > 0 ? Math.min(100, Math.round(raised / goal * 100)) : 0;
 
 window.addEventListener('load', () => {
