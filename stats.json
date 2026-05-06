@@ -1,0 +1,10 @@
+{
+  "success": false,
+  "source": "fallback",
+  "updatedAt": "2026-05-06T19:46:00.087Z",
+  "error": "HTTP 403",
+  "raised": 279,
+  "goal": 15000,
+  "donors": 16,
+  "percent": 1.86
+}
