@@ -1,0 +1,128 @@
+name: Update Donio Stats
+
+on:
+  schedule:
+    # Runs every hour at minute 0
+    - cron: '0 * * * *'
+  # Also allow running manually from GitHub Actions tab
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Scrape Donio and write stats.json
+        run: |
+          node - <<'EOF'
+          const https = require('https');
+          const fs = require('fs');
+
+          const DONIO_URL = 'https://donio.sk/pomozte-nam-do-korey';
+
+          const options = {
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+              'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+              'Accept-Language': 'sk-SK,sk;q=0.9,en-US;q=0.8,en;q=0.7',
+              'Accept-Encoding': 'identity',
+              'Cache-Control': 'no-cache',
+              'Pragma': 'no-cache',
+              'Sec-Fetch-Dest': 'document',
+              'Sec-Fetch-Mode': 'navigate',
+              'Sec-Fetch-Site': 'none',
+              'Sec-Fetch-User': '?1',
+              'Upgrade-Insecure-Requests': '1',
+            }
+          };
+
+          function get(url, redirects = 0) {
+            return new Promise((resolve, reject) => {
+              if (redirects > 5) return reject(new Error('Too many redirects'));
+              https.get(url, options, (res) => {
+                if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+                  return resolve(get(res.headers.location, redirects + 1));
+                }
+                if (res.statusCode !== 200) {
+                  return reject(new Error(`HTTP ${res.statusCode}`));
+                }
+                let body = '';
+                res.on('data', chunk => body += chunk);
+                res.on('end', () => resolve(body));
+                res.on('error', reject);
+              }).on('error', reject);
+            });
+          }
+
+          function parseStats(html) {
+            // Check for Cloudflare block
+            if (html.includes('Just a moment') || html.includes('cf-browser-verification')) {
+              throw new Error('Cloudflare challenge');
+            }
+
+            // Try full statistics object first (most reliable)
+            const fullMatch = html.match(/"statistics":\{"donationsCount":(\d+),"subprojectsCount":\d+,"targetAmountInCents":(\d+),"currentAmountInCents":(\d+)/);
+            if (fullMatch) {
+              const donors = parseInt(fullMatch[1], 10);
+              const goal   = Math.round(parseInt(fullMatch[2], 10) / 100);
+              const raised = Math.round(parseInt(fullMatch[3], 10) / 100);
+              const percent = goal > 0 ? Math.round((raised / goal) * 10000) / 100 : 0;
+              return { raised, goal, donors, percent };
+            }
+
+            // Fallback: individual fields
+            const raisedMatch  = html.match(/"currentAmountInCents":(\d+)/);
+            const targetMatch  = html.match(/"targetAmountInCents":(\d+)/);
+            const donorsMatch  = html.match(/"donationsCount":(\d+)/);
+            if (raisedMatch && targetMatch) {
+              const raised  = Math.round(parseInt(raisedMatch[1], 10) / 100);
+              const goal    = Math.round(parseInt(targetMatch[1], 10) / 100);
+              const donors  = donorsMatch ? parseInt(donorsMatch[1], 10) : 0;
+              const percent = goal > 0 ? Math.round((raised / goal) * 10000) / 100 : 0;
+              return { raised, goal, donors, percent };
+            }
+
+            throw new Error('Could not find stats in page HTML');
+          }
+
+          (async () => {
+            const FALLBACK = { raised: 279, goal: 15000, donors: 16, percent: 1.86 };
+            let result;
+
+            try {
+              console.log('Fetching:', DONIO_URL);
+              const html = await get(DONIO_URL);
+              console.log('Got HTML, length:', html.length);
+              const stats = parseStats(html);
+              console.log('Parsed stats:', stats);
+              result = { success: true, source: 'live', updatedAt: new Date().toISOString(), ...stats };
+            } catch (err) {
+              console.error('Scrape failed:', err.message);
+              result = { success: false, source: 'fallback', updatedAt: new Date().toISOString(), error: err.message, ...FALLBACK };
+            }
+
+            fs.writeFileSync('stats.json', JSON.stringify(result, null, 2));
+            console.log('Written stats.json:', result);
+          })();
+          EOF
+
+      - name: Commit and push stats.json if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add stats.json
+          # Only commit if there are actual changes
+          if git diff --staged --quiet; then
+            echo "No changes to stats.json, skipping commit."
+          else
+            git commit -m "chore: update Donio stats [skip ci]"
+            git push
+          fi
