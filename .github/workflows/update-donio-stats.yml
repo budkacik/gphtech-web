@@ -1,5 +1,8 @@
 name: Update Donio Stats
 
+permissions:
+  contents: write
+
 on:
   schedule:
     # Runs every hour at minute 0
