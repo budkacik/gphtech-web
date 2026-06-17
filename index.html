@@ -1391,9 +1391,9 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.08 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-const raised = 1364;
+const raised = 8500;
 const goal   = 15000;
-const donors = 56;
+const donors = 85;
 const pct    = goal > 0 ? Math.min(100, Math.round(raised / goal * 100)) : 0;
 
 window.addEventListener('load', () => {
