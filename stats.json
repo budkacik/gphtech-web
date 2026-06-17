@@ -3,8 +3,8 @@
   "source": "fallback",
   "updatedAt": "2026-06-17T10:49:48.409Z",
   "error": "HTTP 403",
-  "raised": 279,
+  "raised": 8500,
   "goal": 15000,
-  "donors": 16,
-  "percent": 1.86
+  "donors": 85,
+  "percent": 56
 }
