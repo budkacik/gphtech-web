@@ -1,7 +1,7 @@
 {
   "success": false,
   "source": "fallback",
-  "updatedAt": "2026-07-12T09:43:03.455Z",
+  "updatedAt": "2026-07-12T11:03:05.492Z",
   "error": "HTTP 403",
   "raised": 279,
   "goal": 15000,
