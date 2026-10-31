@@ -1,7 +1,7 @@
 {
   "success": false,
   "source": "fallback",
-  "updatedAt": "2026-10-30T21:11:35.804Z",
+  "updatedAt": "2026-10-31T01:11:00.313Z",
   "error": "Could not find stats in page HTML",
   "raised": 279,
   "goal": 15000,
